@@ -10,48 +10,92 @@ import UIKit
 import Foundation
 
 class SendRequest: NSObject {
+    
+    enum FaceAPIResult<T: Any, Error: Swift.Error> {
+        case Success(T)
+        case Failure(Error)
+    }
+    
+    enum FaceApiError: Swift.Error {
+        case unexpectedError
+        case serviceError
+        case serializeError
+    }
 
-    let initUrl = "https://jsonplaceholder.typicode.com/posts"
+    let urlString = "https://jsonplaceholder.typicode.com/posts"
     
     
     func getRequest () {
-        
-    
-        guard let targetUrl = URL(string:initUrl) else {return }
-        
-       // do {
+        //Create URLobject from urlstring
+        guard let targetUrl = URL(string:urlString) else {return }
+
         let request = URLRequest(url: targetUrl)
             let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
                
                 if error != nil {
-                    print(error)
+                    print(error!)
                 } else {
                     
                     if let usableData = data {
-                        //let dataString = NSString(data: usableData, encoding: String.Encoding.utf8.rawValue)
-                        //if let returnData = dataString {
-                            //print(returnData)
-                        //}
-                        //print(usableData) //JSONSerialization
+                        //Serialize json output
                         let json = try! JSONSerialization.jsonObject(with: usableData, options: [])
+                        //2D array for multi json output, else [String:AnyObject]
                         if let js = json as? [[String:AnyObject]]{
-                            //print(js)
+                            
                             if let title = js[0]["title"] as? String {
                                 print(title)
                             }
                         }
-                        
                     }
                 }
-                
             }
             task.resume()
+    
+    
+    }
+    
+   func detectFaces(facesPhoto: UIImage, completion: @escaping (Any?, Error?) -> Void) {
+    
+    let attr = "age,gender,smile,emotion,makeup,accessories,exposure,noise"
+    let url = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=false&returnFaceAttributes=\(attr)"
+        let request = NSMutableURLRequest(url: NSURL(string: url)! as URL)
+        
+        request.httpMethod = "POST"
+        request.setValue("application/octet-stream", forHTTPHeaderField: "Content-Type")
+        request.setValue("1aae5a9b52244a09a22d6a8604f7f239", forHTTPHeaderField: "Ocp-Apim-Subscription-Key")
+        
+        let pngRepresentation = UIImageJPEGRepresentation(facesPhoto, 1.0)
+        
+        let task = URLSession.shared.uploadTask(with: request as URLRequest, from: pngRepresentation) { (data, response, error) in
             
-       // } catch {
-            
-        //}
-    
-    
-    
+            if error != nil {
+                completion(nil, FaceApiError.unexpectedError)
+                return
+            }
+            else {
+                let httpResponse = response as! HTTPURLResponse
+                let statusCode = httpResponse.statusCode
+                
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments)
+                    if statusCode == 200 {
+                        //print(json)
+                        if let js = json as? [[String:AnyObject]]{
+                            print("yo", js)
+                        }
+                        completion(json, nil)
+                            
+                
+                    }
+                    else {
+                        completion(nil, FaceApiError.serviceError)
+                    }
+                }
+                catch {
+                    completion(nil, FaceApiError.serializeError)
+                }
+            }
+        }
+        task.resume()
     }
 }
