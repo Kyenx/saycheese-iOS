@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		482061172048F35B00AEFFC6 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482061162048F35B00AEFFC6 /* Reachability.swift */; };
 		48FE000920463DAE00256705 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FE000820463DAE00256705 /* AppDelegate.swift */; };
 		48FE000B20463DAE00256705 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FE000A20463DAE00256705 /* ViewController.swift */; };
 		48FE000E20463DAF00256705 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48FE000C20463DAF00256705 /* Main.storyboard */; };
@@ -18,6 +19,7 @@
 
 /* Begin PBXFileReference section */
 		480094A12047DB2600AC1AA0 /* ProjectOxfordFace.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ProjectOxfordFace.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		482061162048F35B00AEFFC6 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		48E273C82047D98B00C70666 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		48FE000520463DAE00256705 /* saycheese.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = saycheese.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48FE000820463DAE00256705 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -62,6 +64,7 @@
 			children = (
 				48FE000820463DAE00256705 /* AppDelegate.swift */,
 				48FE000A20463DAE00256705 /* ViewController.swift */,
+				482061162048F35B00AEFFC6 /* Reachability.swift */,
 				48E273C82047D98B00C70666 /* Bridging-Header.h */,
 				48FE001E2047781B00256705 /* CameraController.swift */,
 				48FE001A20463DE400256705 /* SendRequest.swift */,
@@ -157,6 +160,7 @@
 				48FE001B20463DE400256705 /* SendRequest.swift in Sources */,
 				48FE000B20463DAE00256705 /* ViewController.swift in Sources */,
 				48FE001F2047781B00256705 /* CameraController.swift in Sources */,
+				482061172048F35B00AEFFC6 /* Reachability.swift in Sources */,
 				48FE000920463DAE00256705 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

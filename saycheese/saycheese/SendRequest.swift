@@ -56,8 +56,8 @@ class SendRequest: NSObject {
     
    func detectFaces(facesPhoto: UIImage, completion: @escaping (Any?, Error?) -> Void) {
     
-    let attr = "age,gender,smile,emotion,makeup,accessories,exposure,noise"
-    let url = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=false&returnFaceAttributes=\(attr)"
+    let attr = "age,facialHair,gender,smile,emotion,makeup,accessories,exposure,noise"
+    let url = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=false&returnFaceLandmarks=false&returnFaceAttributes=\(attr)"
         let request = NSMutableURLRequest(url: NSURL(string: url)! as URL)
         
         request.httpMethod = "POST"
@@ -77,12 +77,10 @@ class SendRequest: NSObject {
                 let statusCode = httpResponse.statusCode
                 
                 do {
-                    let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments)
+                    //let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments)
+                    let json = try JSONSerialization.jsonObject(with: data!, options:[])
                     if statusCode == 200 {
-                        //print(json)
-                        if let js = json as? [[String:AnyObject]]{
-                            print("yo", js)
-                        }
+                       
                         completion(json, nil)
                             
                 
