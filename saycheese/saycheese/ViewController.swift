@@ -20,18 +20,18 @@ class ViewController: UIViewController {
     var makeProfile : Bool = false
     var timer = Timer ()
     var errorCounter = 0
-    var emotionArray : [String:Int] = ["anger": 0,
-        "contempt": 0,
-        "disgust": 0,
-        "fear": 0,
-        "happiness": 0,
-        "neutral": 0,
-        "sadness": 0,
-        "surprise": 0]
+    var emotionArray : [String:Float] = ["anger": 0.0,
+        "contempt": 0.0,
+        "disgust": 0.0,
+        "fear": 0.0,
+        "happiness": 0.0,
+        "neutral": 0.0,
+        "sadness": 0.0,
+        "surprise": 0.0]
     
-    //var userProfile : [String:String] = ["gender":"n/a","age":"0","emotion":"n/a","accessories":"n/a", "facialhair":"n/a"]
+    
     var userProfile = [String:String]()
-    
+    //var userProfile : [String:String] = ["gender":"n/a","age":"0","emotion":"n/a","accessories":"n/a", "facialhair":"n/a"]
     
     @IBAction func toggleFlash(_ sender: Any) {
         if cameraController.flashMode == .on {
@@ -69,15 +69,24 @@ class ViewController: UIViewController {
         
     }
     
+    func resetEmotionsArray(){
+    }
+    
     @IBAction func takePicture(_ sender: UIButton) {
         if(!self.toggleRecord){
             self.toggleRecord = !self.toggleRecord
+            captureButton.alpha = 0.5
+            /*self.toggleRecord = !self.toggleRecord
             self.userProfile.removeAll()
+            for key in self.emotionArray.keys {emotionArray[key] = 0.0}
             self.makeProfile = false
             captureButton.alpha = 0.5
-            timer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.takeSnap), userInfo: nil, repeats: true)
+            timer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(self.takeSnap), userInfo: nil, repeats: true)*/
+            cameraController.startRecording()
         } else {
-            timer.invalidate()
+            self.toggleRecord = !self.toggleRecord
+            captureButton.alpha = 1
+            /*timer.invalidate()
             self.toggleRecord = !self.toggleRecord
             captureButton.alpha = 1
             let mEmo = emotionArray.max { a, b in a.value < b.value }
@@ -86,7 +95,8 @@ class ViewController: UIViewController {
             }
             
             print("FINAL:::::::::::::",self.userProfile)
-            presentMessage(self.userProfile)
+            presentMessage(self.userProfile)*/
+            cameraController.stopRecording()
         }
         
         
@@ -139,20 +149,22 @@ class ViewController: UIViewController {
                 if (!js.isEmpty) {
                 if let fA = js[0]["faceAttributes"] as? [String:Any] {
                     //print("fa:",fA)
-                    if let emo = fA["emotion"] as? [String:Double] {
-                        
+                    if let emo = fA["emotion"] as? [String:Float] {
+                        print("emo: ", emo)
                         
                         let mEmo = emo.max { a, b in a.value < b.value }
-                        if let m = mEmo?.key {
-                            //print(m)
-                            print("emotions!:", m)
-                            self.emotionArray[m] = self.emotionArray[m]! + 1
+                        if let m = mEmo {
+                            print(m.key)
+                        //for (key, val) in emo {
+                           //print(key,val)
+                            self.emotionArray[m.key] = self.emotionArray[m.key]! + m.value
+                        //}
                         }
                     }
                     
                     if(!self.makeProfile) {
-                    print("heelo:", res)
-                    print("fa:",fA)
+                    //print("heelo:", res)
+                    //print("fa:",fA)
                     if let acces = fA["accessories"] as? [[String:Any]] {
                         var sString = ""
                         for single in acces {
@@ -165,7 +177,7 @@ class ViewController: UIViewController {
                     }
                     
                     if let gen = fA["gender"] as? String {
-                        print("gender!!!:", gen)
+                        //print("gender!!!:", gen)
                         self.userProfile["gender"] = gen
                     }
                     if let age = fA["age"] as? Double {
@@ -252,6 +264,17 @@ class ViewController: UIViewController {
         
     }
 
+    func playVideo(_ videoRec : Any){
+        let videoRecorded = videoRec as! URL
+        self.performSegue(withIdentifier: "showVideo", sender: videoRecorded)
+    }
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        let vc = segue.destination as! PlaybackViewController
+        vc.videoURL = sender as! URL
+    }
     
     
     override func didReceiveMemoryWarning() {

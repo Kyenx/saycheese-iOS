@@ -62,7 +62,7 @@ class SendRequest: NSObject {
         
         request.httpMethod = "POST"
         request.setValue("application/octet-stream", forHTTPHeaderField: "Content-Type")
-        request.setValue("xx", forHTTPHeaderField: "Ocp-Apim-Subscription-Key")
+        request.setValue("1aae5a9b52244a09a22d6a8604f7f239", forHTTPHeaderField: "Ocp-Apim-Subscription-Key")
         
         let pngRepresentation = UIImageJPEGRepresentation(facesPhoto, 1.0)
         
