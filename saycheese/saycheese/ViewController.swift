@@ -11,11 +11,13 @@ import Photos
 
 class ViewController: UIViewController {
     
+    //--UI variables
     @IBOutlet weak var capturePreviewView: UIView!
     @IBOutlet weak var captureButton: UIButton!
     @IBOutlet weak var toggleFlashButton: UIButton!
     @IBOutlet weak var toggleCameraButton: UIButton!
     
+    //--Class variables init
     var toggleRecord : Bool = false
     var makeProfile : Bool = false
     var timer = Timer ()
@@ -29,10 +31,11 @@ class ViewController: UIViewController {
         "sadness": 0.0,
         "surprise": 0.0]
     
-    
+    //--End result array
     var userProfile = [String:String]()
     //var userProfile : [String:String] = ["gender":"n/a","age":"0","emotion":"n/a","accessories":"n/a", "facialhair":"n/a"]
     
+    //--Camera Flash function
     @IBAction func toggleFlash(_ sender: Any) {
         if cameraController.flashMode == .on {
             cameraController.flashMode = .off
@@ -47,6 +50,7 @@ class ViewController: UIViewController {
         
     }
     
+    //--Switch Camera function
     @IBAction func switchCameras(_ sender: UIButton) {
         do {
             try cameraController.switchCameras()
@@ -72,6 +76,7 @@ class ViewController: UIViewController {
     func resetEmotionsArray(){
     }
     
+    //-- Start recording function
     @IBAction func takePicture(_ sender: UIButton) {
         if(!self.toggleRecord){
             self.toggleRecord = !self.toggleRecord
@@ -102,6 +107,7 @@ class ViewController: UIViewController {
         
     }
     
+    //-- Message Output function
     func presentMessage(_ userArray:[String:String]){
         
         var alert_message = ""
@@ -118,6 +124,7 @@ class ViewController: UIViewController {
         self.present(alertController, animated: true, completion: nil)
     }
     
+    // Take picture and upload to API function
     @objc func takeSnap(){
         cameraController.captureImage {(imagez, error) in
          guard let image = imagez else {
@@ -134,6 +141,7 @@ class ViewController: UIViewController {
         }
     }
     
+    //-- Uploadphoto to detect emotions of picture
     func uploadPhoto(_ img: UIImage) {
         //let imageData = UIImageJPEGRepresentation(photo, 1.0)
         //let imageString = imageData?.base64EncodedString()
@@ -225,9 +233,10 @@ class ViewController: UIViewController {
     
     
     
-    
+    // API class init
     var session = SendRequest()
     
+    //Camera Class init
     let cameraController = CameraController()
     
     override func viewDidLoad() {
