@@ -21,7 +21,7 @@ class CameraController : NSObject {
     var frontCameraInput: AVCaptureDeviceInput?
     var rearCameraInput: AVCaptureDeviceInput?
     
-    var outputURL: URL!
+    var outputURL: URL! //URL path video is stored
     
     //Flash
     var flashMode = AVCaptureDevice.FlashMode.off
@@ -258,7 +258,7 @@ extension CameraController {
 
 extension CameraController {
     
-    
+    //Create tempURL for video to buffer to
     func tempURL() -> URL? {
         let directory = NSTemporaryDirectory() as NSString
         
@@ -341,6 +341,7 @@ extension CameraController {
 }
 
 extension CameraController: AVCapturePhotoCaptureDelegate {
+    //Photo saving function
     public func photoOutput(_ captureOutput: AVCapturePhotoOutput, didFinishProcessingPhoto photoSampleBuffer: CMSampleBuffer?, previewPhoto previewPhotoSampleBuffer: CMSampleBuffer?,
                         resolvedSettings: AVCaptureResolvedPhotoSettings, bracketSettings: AVCaptureBracketedStillImageSettings?, error: Swift.Error?) {
         if let error = error { self.photoCaptureCompletionBlock?(nil, error) }
@@ -357,6 +358,7 @@ extension CameraController: AVCapturePhotoCaptureDelegate {
     }
 }
 
+//ENUMs
 
 extension CameraController {
     
