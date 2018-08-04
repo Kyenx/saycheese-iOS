@@ -24,7 +24,7 @@ class SendRequest: NSObject {
 
     let urlString = "https://jsonplaceholder.typicode.com/posts"
     
-    
+    // HTTP Get Request from...  
     func getRequest () {
         //Create URLobject from urlstring
         guard let targetUrl = URL(string:urlString) else {return }
@@ -54,6 +54,7 @@ class SendRequest: NSObject {
     
     }
     
+    //Func - HTTP Post to Microsoft cognitive API
    func detectFaces(facesPhoto: UIImage, completion: @escaping (Any?, Error?) -> Void) {
     
     let attr = "age,facialHair,gender,smile,emotion,makeup,accessories,exposure,noise"
